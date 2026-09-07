@@ -38,7 +38,7 @@ export const Profile = sequelize.define(
     {
         timestamps: true,
         createdAt:"created_at",
-        updateAt:"updated_at",
+        updatedAt: "updated_at"
     },
 );
 
