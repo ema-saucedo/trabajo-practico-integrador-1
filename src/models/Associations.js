@@ -11,26 +11,26 @@ User.hasOne(Profile,{
 });
 
 Profile.belongsTo(User, {
-    foreingKey:"user_id",
+    foreignKey:"user_id",
     as:"user",
 });
 User.hasMany(Article,{
-    foreingKey:"user_id",
+    foreignKey:"user_id",
     as:"articles"
 });
 Article.belongsTo(User,{
-    foreingKey:"user_id",
+    foreignKey:"user_id",
     as:"author",
 });
 Article.belongsToMany(Tag,{
     through: ArticleTag,
-    foreingKey:"article_id",
+    foreignKey:"article_id",
     otherKey: "tag_id",
     as: "tags",
 });
 Tag.belongsToMany(Article,{
     through: ArticleTag,
-    foreingKey: "tag_id",
+    foreignKey: "tag_id",
     otherKey:"article_id",
     as:"articles"
 });

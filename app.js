@@ -6,6 +6,7 @@ import "dotenv/config";
 import { router as authRouter } from "./src/routes/authRoutes.js"
 import { router as userRouter } from "./src/routes/userRoutes.js";
 import { router as tagRouter } from "./src/routes/tagRoutes.js";
+import { router as articleRouter } from "./src/routes/articleRoutes.js";
 
 import { startDB } from "./src/config/db.js";
 
@@ -18,6 +19,8 @@ app.use(express.json());
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/tags", tagRouter);
+app.use("/api/articles", articleRouter);
+
 
 
 const PORT = process.env.PORT || 3000;
