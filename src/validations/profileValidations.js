@@ -25,3 +25,21 @@ export const profileValidations = [
     .isURL()
     .withMessage("El avatar debe ser una URL válida"),
 ];
+
+export const registerProfileValidations = [
+  body("first_name")
+    .notEmpty()
+    .withMessage("El nombre es obligatorio")
+    .isLength({ min: 2, max: 50 })
+    .withMessage("El nombre debe tener entre 2 y 50 caracteres")
+    .isAlpha("es-ES", { ignore: " " })
+    .withMessage("El nombre solo puede contener letras"),
+
+  body("last_name")
+    .notEmpty()
+    .withMessage("El apellido es obligatorio")
+    .isLength({ min: 2, max: 50 })
+    .withMessage("El apellido debe tener entre 2 y 50 caracteres")
+    .isAlpha("es-ES", { ignore: " " })
+    .withMessage("El apellido solo puede contener letras"),
+];

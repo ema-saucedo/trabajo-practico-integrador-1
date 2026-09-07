@@ -9,8 +9,4 @@ export const router = express.Router();
 
 router.post("/", authMiddleware, addTagToArticle);
 
-router.delete(
-  "/:articleTagId",
-  authMiddleware,
-  removeTagFromArticle
-);
+router.delete("/:articleTagId", authMiddleware, removeTagFromArticle);

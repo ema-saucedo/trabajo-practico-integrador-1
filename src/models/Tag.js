@@ -11,7 +11,7 @@ export const Tag = sequelize.define(
     },
     name: {
       type: DataTypes.STRING(30),
-      allowNull: true,
+      allowNull: false,
       unique: true,
     },
   },

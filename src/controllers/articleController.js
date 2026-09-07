@@ -67,6 +67,7 @@ export const getMyArticles = async (req, res) => {
     const articles = await Article.findAll({
       where: {
         user_id: req.user.id,
+        status: "published",
       },
     });
 

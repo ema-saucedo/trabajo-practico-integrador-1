@@ -1,5 +1,7 @@
 import { User } from "../models/User.js";
 import { hashPassword } from "../helpers/bcrypt.js";
+import { Profile } from "../models/Profile.js";
+import { Article } from "../models/Article.js";
 import { Op } from "sequelize";
 
 export const getUsers = async (req, res) => {
@@ -8,6 +10,12 @@ export const getUsers = async (req, res) => {
       attributes: {
         exclude: ["password"],
       },
+      include: [
+        {
+          model: Profile,
+          as: "profile",
+        },
+      ],
     });
 
     return res.status(200).json({
@@ -26,6 +34,16 @@ export const getUserById = async (req, res) => {
       attributes: {
         exclude: ["password"],
       },
+      include: [
+        {
+          model: Profile,
+          as: "profile",
+        },
+        {
+          model: Article,
+          as: "articles",
+        },
+      ],
     });
 
     if (!user) {
@@ -46,7 +64,7 @@ export const getUserById = async (req, res) => {
 
 export const createUser = async (req, res) => {
   try {
-    const { username, email, password, role } = req.body;
+    const { username, email, password, role, first_name, last_name } = req.body;
 
     const hashedPassword = await hashPassword(password);
 
@@ -55,6 +73,11 @@ export const createUser = async (req, res) => {
       email,
       password: hashedPassword,
       role,
+    });
+    await Profile.create({
+      user_id: newUser.id,
+      first_name,
+      last_name,
     });
 
     return res.status(201).json({
