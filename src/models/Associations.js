@@ -5,7 +5,7 @@ import { Tag } from "./Tag.js";
 import { ArticleTag } from "./ArticleTag.js";
 
 User.hasOne(Profile,{
-    foreingKey: "user_id",
+    foreignKey: "user_id",
     as:"profile",
     onDelete: "CASCADE"
 });

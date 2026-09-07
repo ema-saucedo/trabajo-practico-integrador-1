@@ -1,4 +1,5 @@
 import { Article } from "../models/Article.js";
+import { ArticleTag } from "../models/ArticleTag.js";
 
 export const createArticle = async (req, res) => {
   try {
@@ -136,6 +137,12 @@ export const deleteArticle = async (req, res) => {
         message: "Artículo no encontrado",
       });
     }
+
+    await ArticleTag.destroy({
+      where: {
+        article_id: article.id,
+      },
+    });
 
     await article.destroy();
 

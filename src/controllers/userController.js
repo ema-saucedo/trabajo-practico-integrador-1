@@ -1,5 +1,6 @@
 import { User } from "../models/User.js";
 import { hashPassword } from "../helpers/bcrypt.js";
+import { Op } from "sequelize";
 
 export const getUsers = async (req, res) => {
   try {
@@ -84,6 +85,24 @@ export const updateUser = async (req, res) => {
 
     const { username, email, role } = req.body;
 
+    if (email) {
+      const existingEmail = await User.findOne({
+        where: {
+          email,
+          id: {
+            [Op.ne]: user.id,
+          },
+        },
+        paranoid: false,
+      });
+
+      if (existingEmail) {
+        return res.status(400).json({
+          message: "El email ya está en uso",
+        });
+      }
+    }
+
     await user.update({
       username,
       email,
@@ -100,6 +119,7 @@ export const updateUser = async (req, res) => {
       },
     });
   } catch (error) {
+    console.error(error);
     return res.status(500).json({
       message: "Error interno del servidor",
     });

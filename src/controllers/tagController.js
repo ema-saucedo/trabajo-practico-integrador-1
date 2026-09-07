@@ -38,6 +38,16 @@ export const createTag = async (req, res) => {
   try {
     const { name } = req.body;
 
+    const existingTag = await Tag.findOne({
+      where: { name },
+    });
+
+    if (existingTag) {
+      return res.status(400).json({
+        message: "El tag ya existe",
+      });
+    }
+
     const newTag = await Tag.create({
       name,
     });

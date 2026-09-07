@@ -28,6 +28,19 @@ export const addTagToArticle = async (req, res) => {
       });
     }
 
+    const existingRelation = await ArticleTag.findOne({
+      where: {
+        article_id,
+        tag_id,
+      },
+    });
+
+    if (existingRelation) {
+      return res.status(400).json({
+        message: "El tag ya está asociado a este artículo",
+      });
+    }
+
     const articleTag = await ArticleTag.create({
       article_id,
       tag_id,
