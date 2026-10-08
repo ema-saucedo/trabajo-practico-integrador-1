@@ -23,6 +23,7 @@ export const User = sequelize.define(
       type: DataTypes.STRING(255),
       allowNull: false,
     },
+//cuando tenemos el datatypes.enum que significa que solo puede tomar los valores que nosotros definimos, en este caso el de role, que puede ser user o admin, y el defaultValue es para que si no se le pasa ningun valor, por defecto sea user.
     role: {
       type: DataTypes.ENUM("user", "admin"),
       allowNull: false,

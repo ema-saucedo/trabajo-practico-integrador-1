@@ -1,5 +1,7 @@
 import { body } from "express-validator";
 
+// El nombre del tag es obligatorio, debe tener entre 2 y 30 caracteres y no
+// puede contener espacios.
 export const tagValidations = [
   body("name")
     .notEmpty()

@@ -1,6 +1,10 @@
 import { body } from "express-validator";
 
+// Estas reglas controlan los datos para crear un usuario. body("...") indica
+// qué campo del cuerpo de la petición se está revisando.
 export const userValidations = [
+  // El username es obligatorio, debe medir de 3 a 20 caracteres y tener solo
+  // letras y números.
   body("username")
     .notEmpty()
     .withMessage("El username es obligatorio")
@@ -9,12 +13,15 @@ export const userValidations = [
     .isAlphanumeric()
     .withMessage("El username solo puede contener letras y números"),
 
+  // El email es obligatorio y debe tener un formato de correo válido.
   body("email")
     .notEmpty()
     .withMessage("El email es obligatorio")
     .isEmail()
     .withMessage("El email no es válido"),
 
+  // La contraseña es obligatoria y debe cumplir con los requisitos mínimos
+  // indicados para que no sea demasiado simple.
   body("password")
     .notEmpty()
     .withMessage("La contraseña es obligatoria")
@@ -27,12 +34,15 @@ export const userValidations = [
     .matches(/[0-9]/)
     .withMessage("La contraseña debe contener al menos un número"),
 
+  // El rol no es obligatorio; si se envía, solo puede ser user o admin.
   body("role")
     .optional()
     .isIn(["user", "admin"])
     .withMessage("El role debe ser user o admin"),
 ];
 
+// Para actualizar un usuario, los campos son opcionales porque se puede cambiar
+// solo uno de ellos. Si se envían, igualmente tienen que cumplir estas reglas.
 export const updateUserValidations = [
   body("username")
     .optional()
@@ -50,4 +60,18 @@ export const updateUserValidations = [
     .optional()
     .isIn(["user", "admin"])
     .withMessage("El role debe ser user o admin"),
+];
+
+// Para iniciar sesión alcanza con que el email tenga formato válido y que se
+// envíe una contraseña; la comprobación de que coincidan se hace en el controller.
+export const loginValidations = [
+  body("email")
+    .notEmpty()
+    .withMessage("El email es obligatorio")
+    .isEmail()
+    .withMessage("El email no es válido"),
+
+  body("password")
+    .notEmpty()
+    .withMessage("La contraseña es obligatoria"),
 ];

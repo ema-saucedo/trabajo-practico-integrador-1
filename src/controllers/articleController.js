@@ -1,6 +1,8 @@
 import { Article } from "../models/Article.js";
 import { ArticleTag } from "../models/ArticleTag.js";
+import { User } from "../models/User.js";
 
+// Crea un artículo y lo asocia con el usuario que inició sesión.
 export const createArticle = async (req, res) => {
   try {
     const { title, content, excerpt, status } = req.body;
@@ -10,6 +12,7 @@ export const createArticle = async (req, res) => {
       content,
       excerpt,
       status,
+      // El dueño sale del token, así no se puede elegir otro user_id en el body.
       user_id: req.user.id,
     });
 
@@ -24,12 +27,21 @@ export const createArticle = async (req, res) => {
   }
 };
 
+// Devuelve solo artículos publicados e incluye datos públicos de quien los creó.
 export const getArticles = async (req, res) => {
   try {
     const articles = await Article.findAll({
       where: {
         status: "published",
       },
+      include: [
+        {
+          model: User,
+          as: "author",
+          // Se excluyen otros datos del usuario que no hacen falta en esta respuesta.
+          attributes: ["id", "username"],
+        },
+      ],
     });
 
     return res.status(200).json({
@@ -42,6 +54,9 @@ export const getArticles = async (req, res) => {
   }
 };
 
+// Busca un artículo usando el id recibido en la URL.
+// A diferencia de getArticles, acá no se filtra por status, así que también
+// puede devolver un artículo archived si existe.
 export const getArticleById = async (req, res) => {
   try {
     const article = await Article.findByPk(req.params.id);
@@ -62,6 +77,7 @@ export const getArticleById = async (req, res) => {
   }
 };
 
+// Devuelve los artículos publicados del usuario que inició sesión.
 export const getMyArticles = async (req, res) => {
   try {
     const articles = await Article.findAll({
@@ -81,6 +97,9 @@ export const getMyArticles = async (req, res) => {
   }
 };
 
+// Busca artículos por el id de usuario recibido en la URL.
+// Esta consulta tampoco filtra por status, por lo que puede incluir artículos
+// archived además de los publicados.
 export const getArticlesByUser = async (req, res) => {
   try {
     const articles = await Article.findAll({
@@ -99,6 +118,8 @@ export const getArticlesByUser = async (req, res) => {
   }
 };
 
+// Actualiza los datos del artículo. La ruta ya ejecutó ownerMiddleware antes
+// de llegar acá para verificar los permisos de quien realiza el cambio.
 export const updateArticle = async (req, res) => {
   try {
     const article = await Article.findByPk(req.params.id);
@@ -129,6 +150,8 @@ export const updateArticle = async (req, res) => {
   }
 };
 
+// Elimina el artículo y primero borra las relaciones con tags para que no queden
+// asociaciones apuntando a un artículo eliminado.
 export const deleteArticle = async (req, res) => {
   try {
     const article = await Article.findByPk(req.params.id);

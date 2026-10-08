@@ -1,5 +1,6 @@
 import { Tag } from "../models/Tag.js";
 
+// Obtiene todos los tags y los devuelve en la respuesta.
 export const getTags = async (req, res) => {
   try {
     const tags = await Tag.findAll();
@@ -14,6 +15,7 @@ export const getTags = async (req, res) => {
   }
 };
 
+// Busca un tag por su id; si no existe, devuelve un 404.
 export const getTagById = async (req, res) => {
   try {
     const tag = await Tag.findByPk(req.params.id);
@@ -34,6 +36,7 @@ export const getTagById = async (req, res) => {
   }
 };
 
+// Crea un tag nuevo, comprobando primero que no exista otro con el mismo nombre.
 export const createTag = async (req, res) => {
   try {
     const { name } = req.body;
@@ -63,6 +66,7 @@ export const createTag = async (req, res) => {
   }
 };
 
+// Busca el tag antes de actualizarlo para poder responder 404 si no existe.
 export const updateTag = async (req, res) => {
   try {
     const tag = await Tag.findByPk(req.params.id);
@@ -90,6 +94,8 @@ export const updateTag = async (req, res) => {
   }
 };
 
+// Busca el tag antes de eliminarlo; destroy lo borra según la configuración
+// del modelo Tag, que en este proyecto no tiene activado el borrado lógico.
 export const deleteTag = async (req, res) => {
   try {
     const tag = await Tag.findByPk(req.params.id);

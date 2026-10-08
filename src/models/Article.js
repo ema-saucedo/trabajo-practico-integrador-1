@@ -1,6 +1,8 @@
+//Tercer paso
+//aca se importan los paquetes necesarios para poder usar sequelize y definir el modelo de Article, que es el modelo que representa a los artículos en la base de datos, y se exporta para poder usarlo en otros archivos
 import { DataTypes } from "sequelize";
 import { sequelize } from "../config/db.js";
-
+//con esto se crea el modelo de Article, que es el modelo que representa a los artículos en la base de datos, y se exporta para poder usarlo en otros archivos
 export const Article = sequelize.define(
   "Article",
   {
@@ -33,6 +35,7 @@ export const Article = sequelize.define(
       allowNull: false,
     },
   },
+  //esto es para que sequelize cree las columnas created_at, updated_at y deleted_at en la tabla de articles, y que se usen para el control de cambios y borrado lógico de los registros
   {
     paranoid: true,
     timestamps: true,

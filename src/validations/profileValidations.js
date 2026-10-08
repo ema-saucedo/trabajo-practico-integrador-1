@@ -1,5 +1,7 @@
 import { body } from "express-validator";
 
+// Validaciones para editar el perfil: todos los campos son opcionales, así que
+// se puede actualizar solo el nombre, apellido, biografía o avatar.
 export const profileValidations = [
   body("first_name")
     .optional()
@@ -26,6 +28,8 @@ export const profileValidations = [
     .withMessage("El avatar debe ser una URL válida"),
 ];
 
+// Al registrar la cuenta también se crea el perfil, por eso el nombre y el
+// apellido son obligatorios. La biografía sigue siendo opcional.
 export const registerProfileValidations = [
   body("first_name")
     .notEmpty()

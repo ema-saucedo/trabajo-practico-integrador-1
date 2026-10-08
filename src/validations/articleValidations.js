@@ -1,5 +1,7 @@
 import { body } from "express-validator";
 
+// Reglas para crear un artículo: título y contenido son obligatorios; el resumen
+// y el estado pueden omitirse porque el modelo tiene valores permitidos por defecto.
 export const articleValidations = [
   body("title")
     .notEmpty()
@@ -24,6 +26,8 @@ export const articleValidations = [
     .withMessage("El estado debe ser published o archived"),
 ];
 
+// Reglas para editar un artículo. Todos los campos son opcionales para permitir
+// actualizar solo el dato que se quiera cambiar, pero si se envían se validan.
 export const updateArticleValidations = [
   body("title")
     .optional()
