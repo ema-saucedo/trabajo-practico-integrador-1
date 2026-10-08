@@ -51,3 +51,15 @@ export const updateUserValidations = [
     .isIn(["user", "admin"])
     .withMessage("El role debe ser user o admin"),
 ];
+
+export const loginValidations = [
+  body("email")
+    .notEmpty()
+    .withMessage("El email es obligatorio")
+    .isEmail()
+    .withMessage("El email no es válido"),
+
+  body("password")
+    .notEmpty()
+    .withMessage("La contraseña es obligatoria"),
+];

@@ -14,9 +14,14 @@ import { startDB } from "./src/config/db.js";
 const app = express();
 
 
-app.use(cors());
+// En tu backend (app.js)
+app.use(cors({
+    origin: 'http://localhost:5173', // La URL por defecto de Vite
+    credentials: true // Obligatorio para que viajen las cookies del JWT
+}));
 app.use(cookieParser());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/tags", tagRouter);

@@ -42,4 +42,9 @@ export const registerProfileValidations = [
     .withMessage("El apellido debe tener entre 2 y 50 caracteres")
     .isAlpha("es-ES", { ignore: " " })
     .withMessage("El apellido solo puede contener letras"),
+
+  body("biography")
+    .optional({ values: "falsy" })
+    .isLength({ max: 500 })
+    .withMessage("La biografía no puede superar los 500 caracteres"),
 ];

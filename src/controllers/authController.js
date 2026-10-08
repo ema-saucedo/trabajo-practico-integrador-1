@@ -5,7 +5,21 @@ import { Profile } from "../models/Profile.js";
 
 export const register = async (req, res) => {
   try {
-    const { username, email, password, first_name, last_name } = req.body;
+    const { username, email, password } = req.body;
+    const first_name = req.body.first_name || req.body.nombre;
+    const last_name = req.body.last_name || req.body.apellido;
+    const biography =
+      req.body.biography ||
+      (req.body.profile && req.body.profile.bio) ||
+      req.body.bio ||
+      null;
+
+    // 1. Validar que todos los datos obligatorios lleguen en la petición
+    if (!username || !email || !password || !first_name || !last_name) {
+      return res.status(400).json({
+        message: "Todos los campos son obligatorios. Verifica los nombres de las variables enviadas.",
+      });
+    }
 
     const existingEmail = await User.findOne({
       where: { email },
@@ -39,7 +53,9 @@ export const register = async (req, res) => {
       user_id: newUser.id,
       first_name,
       last_name,
+      biography,
     });
+
     return res.status(201).json({
       message: "Usuario registrado correctamente",
       user: {
@@ -50,7 +66,8 @@ export const register = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error(error);
+    // Esto te mostrará el error exacto de Sequelize en la terminal
+    console.error("Error en el registro:", error.message || error);
     return res.status(500).json({
       message: "Error interno del servidor",
     });

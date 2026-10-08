@@ -1,5 +1,6 @@
 import { Article } from "../models/Article.js";
 import { ArticleTag } from "../models/ArticleTag.js";
+import { User } from "../models/User.js";
 
 export const createArticle = async (req, res) => {
   try {
@@ -30,6 +31,13 @@ export const getArticles = async (req, res) => {
       where: {
         status: "published",
       },
+      include: [
+        {
+          model: User,
+          as: "author",
+          attributes: ["id", "username"],
+        },
+      ],
     });
 
     return res.status(200).json({
